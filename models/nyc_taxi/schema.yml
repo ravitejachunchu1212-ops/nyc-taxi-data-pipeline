@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: nyc_taxi
+    database: nyc_taxi_databricks
+    schema: default
+    tables:
+      - name: gold_payment
+      - name: gold_daily
+      - name: gold_hourly
+      - name: gold_location
+
+models:
+  - name: fct_hourly_performance
+    columns:
+      - name: hour_of_day
+        tests:
+          - not_null
+          - unique
+      - name: total_trips
+        tests:
+          - not_null
+      - name: time_of_day
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Morning', 'Afternoon', 'Evening', 'Night']
+
+  - name: fct_location_performance
+    columns:
+      - name: pickup_location_id
+        tests:
+          - not_null
+          - unique
+      - name: total_trips
+        tests:
+          - not_null
